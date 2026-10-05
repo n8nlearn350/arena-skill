@@ -1,2 +1,5 @@
 node_modules/
+# generated; rebuild with build-serve.sh
 out/
+# standalone/ IS committed on purpose: it is what gives the sites a permanent
+# public URL, served straight from GitHub via a static CDN.
