@@ -1,5 +1,5 @@
 import { useId, useState, type FormEvent } from 'react'
-import type { Copy, Locale } from './content'
+import { asset, type Copy, type Locale } from './content'
 
 /* ------------------------------------------------------------------ */
 /* Small pieces                                                       */
@@ -120,7 +120,7 @@ export function Hero({ t }: { t: Copy }) {
 
         <figure className="reveal reveal-2 lg:col-span-5">
           <img
-            src="/listening-room.jpg"
+            src={asset('/listening-room.jpg')}
             alt={t.hero.figureAlt}
             width={1408}
             height={768}
@@ -178,7 +178,7 @@ export function Archive({ t }: { t: Copy }) {
       <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
         <figure className="lg:order-2 lg:col-span-6">
           <img
-            src="/archive-detail.jpg"
+            src={asset('/archive-detail.jpg')}
             alt={t.archive.figureAlt}
             width={1408}
             height={768}

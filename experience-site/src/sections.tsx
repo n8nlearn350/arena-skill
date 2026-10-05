@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { motion, useTransform, type MotionValue } from 'motion/react'
-import { site } from './content'
+import { site, asset } from './content'
 
 /* ------------------------------------------------------------------ */
 /* Preloader                                                          */
@@ -30,7 +30,7 @@ export function Preloader({
     let loaded = false
 
     const img = new Image()
-    img.src = '/hero-tunnel.jpg'
+    img.src = asset('/hero-tunnel.jpg')
     img.decode?.().then(() => (loaded = true)).catch(() => setFailed(true))
     img.onerror = () => setFailed(true)
 
@@ -119,7 +119,7 @@ export function Hero({ scrollYProgress }: { scrollYProgress: MotionValue<number>
     <section className="relative h-[190svh]">
       <div className="sticky top-0 flex h-svh items-center justify-center overflow-hidden">
         <motion.img
-          src="/hero-tunnel.jpg"
+          src={asset('/hero-tunnel.jpg')}
           alt={site.hero.imageAlt}
           width={1408}
           height={768}
@@ -236,7 +236,7 @@ export function MomentsDisc() {
                     }}
                   >
                     <img
-                      src={m.image}
+                      src={asset(m.image)}
                       alt={m.alt}
                       width={1408}
                       height={768}

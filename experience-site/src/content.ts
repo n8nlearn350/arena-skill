@@ -112,3 +112,13 @@ export const site = {
     ] as [string, string][],
   },
 }
+
+/**
+ * Prefix a public asset with the deployment base path.
+ *
+ * Vite rewrites asset URLs it generates, but NOT string literals in your code —
+ * so a hardcoded "/hero-tunnel.jpg" breaks the moment the site is served from a
+ * subpath. Everything that points at `public/` goes through here.
+ */
+export const asset = (path: string): string =>
+  import.meta.env.BASE_URL.replace(/\/+$/, '') + (path.startsWith('/') ? path : `/${path}`)
