@@ -65,3 +65,36 @@ That check earned its keep immediately: the cinematic site reports its preloader
 sitting at **94%** — which is the intended behaviour, because the counter is
 written never to claim 100% until `img.decode()` resolves. In jsdom it never
 does. The counter is honest, and the test proved it.
+
+---
+
+## `compose.py` — what the sites look like
+
+No browser means no screenshots, so the preview images are **composed directly
+with Pillow** from the sites' own assets and design tokens: the real
+photographs, the real fonts (Anton, Archivo, JetBrains Mono, Alexandria, pulled
+from google/fonts), and the real colour values from `index.css`.
+
+```bash
+pip install Pillow arabic-reshaper python-bidi fonttools
+python3 preview/compose.py     # writes preview/shots/
+```
+
+`shots/00-all-sites.png` is the one to look at: hero, disc, Arabic hero and both
+mobile layouts on a single sheet.
+
+It is a faithful recreation of the layout at rest, not a screenshot. Anything
+the browser computes at runtime — the scroll transform mid-scrub, the disc's 3D
+rotation — is drawn at its resting state.
+
+**Arabic needed two fixes** that are worth knowing about, since this bites any
+server-side Arabic rendering:
+
+1. **No Raqm.** Pillow here has no complex-text shaping and no bidi, so
+   `arabic-reshaper` + `python-bidi` do both by hand.
+2. **Ten missing isolated forms.** Alexandria has no glyph for the isolated
+   presentation forms of alef, reh, teh marbuta, ain, waw, alef-hamza,
+   alef-madda, feh, lam and heh — so they rendered as empty boxes. Every one of
+   those letters is non-joining, so its isolated glyph is identical to the base
+   letter; `ar()` substitutes the base codepoint, checked against the font's
+   cmap, and the substitution is visually lossless.
