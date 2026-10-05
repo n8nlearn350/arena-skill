@@ -36,15 +36,21 @@ export function Preloader({
 
     const started = performance.now()
     const MIN_MS = 1400 // long enough to read, short enough not to annoy
+    const GIVE_UP_MS = 4000 // never leave anyone staring at a stuck counter
 
     const tick = (now: number) => {
       if (cancelled) return
-      const t = Math.min(1, (now - started) / MIN_MS)
-      // Ease out, but never claim 100% until the image is actually decoded.
-      const shown = Math.round(Math.min(t, loaded ? 1 : 0.94) * 100)
+      const elapsed = now - started
+      const t = Math.min(1, elapsed / MIN_MS)
+      // Never claim 100% until the decoded image is ready — but if the image
+      // never arrives (slow network, blocked request), let the sequence finish
+      // anyway. A site that hides itself behind a hung loader is worse than a
+      // site that shows up without its hero photograph.
+      const ready = loaded || elapsed > GIVE_UP_MS
+      const shown = Math.round(Math.min(t, ready ? 1 : 0.94) * 100)
       setProgress(shown)
 
-      if (t >= 1 && loaded) {
+      if (t >= 1 && ready) {
         setLeaving(true)
         window.setTimeout(() => !cancelled && onDone(), 620)
         return
