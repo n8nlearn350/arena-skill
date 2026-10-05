@@ -1,0 +1,120 @@
+@import "tailwindcss";
+
+/*
+  Design tokens — "House of the Record"
+  Deliberately NOT the default warm-cream (#F4F1EA) + serif + terracotta (#D97757)
+  cluster the frontend-design skill warns about. Base is an aged newsprint grey-green,
+  the lead colour is a deep oxidized teal drawn from the room's painted plaster,
+  and rust appears only as a small accent.
+*/
+@theme {
+  --color-paper: #e6e0d1;
+  --color-paper-lift: #f1ecdf;
+  --color-ink: #101f1d;
+  --color-teal: #175d57;
+  --color-teal-deep: #0e3d39;
+  --color-rust: #a8451f;
+  --color-fade: #5f6d67;
+
+  --font-display: "Bricolage Grotesque Variable", "Alexandria Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Alexandria Variable", "Bricolage Grotesque Variable", ui-sans-serif, system-ui, sans-serif;
+
+  --radius-none: 0px;
+}
+
+:root {
+  color-scheme: light;
+  --rule: color-mix(in oklab, var(--color-ink) 22%, transparent);
+  --rule-strong: color-mix(in oklab, var(--color-ink) 55%, transparent);
+  --surface: var(--color-paper);
+  --surface-lift: var(--color-paper-lift);
+  --text: var(--color-ink);
+  --text-muted: var(--color-fade);
+  /* --accent and --link are lightened in dark mode so contrast holds both ways. */
+  --accent: var(--color-rust);
+  --link: var(--color-teal);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --rule: color-mix(in oklab, var(--color-paper) 24%, transparent);
+    --rule-strong: color-mix(in oklab, var(--color-paper) 60%, transparent);
+    --surface: #0c1615;
+    --surface-lift: #131f1e;
+    --text: #e6e0d1;
+    --text-muted: #9aa8a1;
+    --accent: #e07d4f;
+    --link: #7cbdb4;
+  }
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    background: var(--surface);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Arabic leans on Alexandria at a slightly heavier weight: its Latin and
+     Arabic are drawn as one family, so the two scripts sit together properly. */
+  html[lang="ar"] body {
+    font-weight: 430;
+    line-height: 1.85;
+  }
+
+  html[lang="ar"] .display {
+    font-family: "Alexandria Variable", sans-serif;
+    font-weight: 640;
+    line-height: 1.35;
+  }
+
+  .display {
+    font-family: var(--font-display);
+    font-weight: 620;
+    letter-spacing: -0.02em;
+    line-height: 1.04;
+  }
+
+  html[lang="ar"] .display {
+    letter-spacing: 0;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-rust);
+    outline-offset: 3px;
+  }
+
+  ::selection {
+    background: var(--color-teal);
+    color: var(--color-paper-lift);
+  }
+}
+
+/* One orchestrated page-load reveal, not a fade-up on every section. */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    animation: reveal 720ms cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+  }
+  .reveal-2 { animation-delay: 90ms; }
+  .reveal-3 { animation-delay: 180ms; }
+  .reveal-4 { animation-delay: 270ms; }
+
+  @keyframes reveal {
+    to { opacity: 1; transform: none; }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; }
+}
